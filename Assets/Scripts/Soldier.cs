@@ -10,4 +10,20 @@ public class Soldier : Unit, ISelectable
         healthBar.gameObject.SetActive(selected);
     }
 
+    private void Command(Vector3 destination)
+    {
+        nav.SetDestination(destination);
+        task = Task.move;
+        target = null;
+    }
+    private void Command(Soldier soldierToFollow)
+    {
+        target = soldierToFollow.transform;
+        task = Task.follow;
+    }
+    private void Command(Dragon dragonToAttack)
+    {
+        //todo
+    }
+
 }
