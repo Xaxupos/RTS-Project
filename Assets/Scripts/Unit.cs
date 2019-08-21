@@ -21,23 +21,31 @@ public class Unit : MonoBehaviour
     public float HealthPercent { get { return hp / hpMax; } }
     public bool isAlive { get { return hp > 0; } }
 
-    public Transform target;
-
-    [SerializeField]
-    float hp, hpMax = 100;
+    [Header("Unit")]
     [SerializeField]
     GameObject hpBarPrefab;
     [SerializeField]
-    float stoppingDistance = 1;
+    float hp, hpMax = 100;
+    [SerializeField]
+    protected float shootingDistance = 1;
+    [SerializeField]
+    protected float stoppingDistance = 1;
+    [SerializeField]
+    protected float shootingCooldown = 1;
+    [SerializeField]
+    protected float shootingDamage = 0;
 
+    protected  Transform target;
     protected HPBar healthBar;
     protected Task task = Task.idle;
     protected NavMeshAgent nav;
 
+    float attackTimer;
+
     Animator animator;
     
 
-    void Awake()
+    protected virtual void Awake()
     {
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
@@ -82,7 +90,29 @@ public class Unit : MonoBehaviour
     }
     protected virtual void Attacking()
     {
-        nav.velocity = Vector3.zero;
+        if(target)
+        {
+            nav.velocity = Vector3.zero;
+            transform.LookAt(target);
+            float distance = Vector3.Magnitude(nav.destination - transform.position);
+            if (distance <= shootingDistance)
+            {             
+                if((attackTimer -= Time.deltaTime) <= 0)
+                {
+                    Shoot();
+                }
+            }
+            else
+            {
+                task = Task.chase;
+            }
+        }
+        else
+        {
+            task = Task.idle;
+        }
+         
+
     }
     protected virtual void Moving()
     {
@@ -105,7 +135,19 @@ public class Unit : MonoBehaviour
     }
     protected virtual void Chasing()
     {
-        //todo
+        if (target)
+        {
+            nav.SetDestination(target.position);
+            float distance = Vector3.Magnitude(nav.destination - transform.position);
+            if (distance <= shootingDistance)
+            {
+                task = Task.attack;
+            }
+        }
+        else
+        {
+            task = Task.idle;
+        }
     }
 
     protected virtual void Animate()
@@ -117,6 +159,30 @@ public class Unit : MonoBehaviour
         animator.SetBool(ANIMATOR_ALIVE, isAlive);
     }
 
-    
+    public virtual void Shoot()
+    {
+        animator.SetTrigger(ANIMATOR_SHOOTING);
+        attackTimer = shootingCooldown;
+    }
+
+    public virtual void DealDamage()
+    {
+        if(target)
+        {
+            Unit unit = target.GetComponent<Unit>();
+            if (unit && unit.isAlive)
+            {
+                unit.hp -= shootingDamage;
+            }
+            else
+                target = null;
+        }
+    }
+
+    protected virtual void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, shootingDistance);
+    }
 
 }
