@@ -137,7 +137,7 @@ public class CameraControl : MonoBehaviour
         selectedUnits.Clear();
         foreach(Unit unit in Unit.SelectableUnits)
         {
-            if (!unit) continue;
+            if (!unit || !unit.isAlive) continue;
             var pos = unit.transform.position;
             var posScreen = camera.WorldToScreenPoint(pos);
             bool inRect = isPointInRect(boxRect, posScreen);

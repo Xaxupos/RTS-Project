@@ -39,10 +39,10 @@ public class Unit : MonoBehaviour
     protected HPBar healthBar;
     protected Task task = Task.idle;
     protected NavMeshAgent nav;
+    protected Animator animator;
 
     float attackTimer;
 
-    Animator animator;
     
 
     protected virtual void Awake()
@@ -84,6 +84,16 @@ public class Unit : MonoBehaviour
         Animate();
     }
 
+    protected virtual void OnTriggerEnter(Collider other)
+    {
+
+    }
+
+    protected virtual void OnTriggerExit(Collider other)
+    {
+        
+    }
+
     protected virtual void Idling()
     {
         nav.velocity = Vector3.zero;
@@ -94,7 +104,7 @@ public class Unit : MonoBehaviour
         {
             nav.velocity = Vector3.zero;
             transform.LookAt(target);
-            float distance = Vector3.Magnitude(nav.destination - transform.position);
+            float distance = Vector3.Magnitude(target.position - transform.position);
             if (distance <= shootingDistance)
             {             
                 if((attackTimer -= Time.deltaTime) <= 0)
@@ -138,6 +148,7 @@ public class Unit : MonoBehaviour
         if (target)
         {
             nav.SetDestination(target.position);
+            // jak cos to tu dopisac
             float distance = Vector3.Magnitude(nav.destination - transform.position);
             if (distance <= shootingDistance)
             {
@@ -161,8 +172,18 @@ public class Unit : MonoBehaviour
 
     public virtual void Shoot()
     {
-        animator.SetTrigger(ANIMATOR_SHOOTING);
-        attackTimer = shootingCooldown;
+        if (target)
+        {
+            Unit unit = target.GetComponent<Unit>();
+            if (unit && unit.isAlive)
+            {
+                animator.SetTrigger(ANIMATOR_SHOOTING);
+                attackTimer = shootingCooldown;
+            }
+            else
+                target = null;
+        }
+        
     }
 
     public virtual void DealDamage()
@@ -170,12 +191,24 @@ public class Unit : MonoBehaviour
         if(target)
         {
             Unit unit = target.GetComponent<Unit>();
-            if (unit && unit.isAlive)
+            if (unit)
             {
-                unit.hp -= shootingDamage;
+                unit.ReceiveDamage(shootingDamage, transform.position);
             }
-            else
-                target = null;
+        }
+    }
+
+    public virtual void ReceiveDamage(float damage, Vector3 damageDealerPosition)
+    {
+        if(isAlive) hp -= damage;
+
+        if(!isAlive)
+        {
+            healthBar.gameObject.SetActive(false);
+            //enabled = false;
+            nav.enabled = false;
+            foreach (var collider in GetComponents<Collider>())
+                collider.enabled = false;
         }
     }
 
