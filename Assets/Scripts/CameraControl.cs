@@ -27,7 +27,6 @@ public class CameraControl : MonoBehaviour
 
     private void Awake()
     {
-        selectionBox.gameObject.SetActive(false);
         selectionBox = GetComponentInChildren<Image>(true).transform as RectTransform;
         camera = GetComponent<Camera>();
     }

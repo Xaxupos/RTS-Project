@@ -524,7 +524,7 @@ Transform:
   m_GameObject: {fileID: 5940930721899859689}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 428.23724, y: 0.00000047683716, z: 568.0458}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 5940930721899893437}
   - {fileID: 5940930721899893391}
@@ -585,6 +585,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  hp: 0
+  hpMax: 100
+  hpBarPrefab: {fileID: 6124845349146740055, guid: 737d4aa50db18774c873ed17788f44fa,
+    type: 3}
 --- !u!1 &5940930721899859691
 GameObject:
   m_ObjectHideFlags: 0
