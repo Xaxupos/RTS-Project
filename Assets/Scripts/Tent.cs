@@ -34,6 +34,7 @@ public class Tent : MonoBehaviour, ISelectable
     {
         var buyable = prefab.GetComponent<Buyable>();
         if (!buyable || !Money.TrySpendMoney(buyable.cost)) return;
+
         var unit = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
         unit.SendMessage("Command", flag.position, SendMessageOptions.DontRequireReceiver);
     }

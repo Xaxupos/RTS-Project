@@ -7,7 +7,7 @@ public class UnitButton : MonoBehaviour
 {
 
     [SerializeField]
-    GameObject spawnPrefab;
+    protected GameObject spawnPrefab;
 
     Button button;
     Text text;
@@ -32,7 +32,7 @@ public class UnitButton : MonoBehaviour
         }
     }
 
-    public void SpawnUnit()
+    public virtual void SpawnUnit()
     {
         CameraControl.SpawnUnits(spawnPrefab);
     }
