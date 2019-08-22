@@ -231,7 +231,8 @@ public class CameraControl : MonoBehaviour
             var buyable = buildingPrefabToSpawn.GetComponent<Buyable>();
             if (!buyable || !Money.TrySpendMoney(buyable.cost)) return;
 
-            var unit = Instantiate(buildingPrefabToSpawn, placer.transform.position, placer.transform.rotation);
+            var building = Instantiate(buildingPrefabToSpawn, placer.transform.position, placer.transform.rotation);
+            MoneyEarner.ShowMoneyText(building.transform.position, buyable.cost);
         }
     }
 

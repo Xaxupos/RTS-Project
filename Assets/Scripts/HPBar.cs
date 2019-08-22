@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class HPBar : MonoBehaviour
 {
 
-    const string HP_CANVAS = "HP Canvas";
+    const string WORLD_CANVAS = "World Canvas";
 
     [SerializeField]
     Vector3 offset;
@@ -14,16 +14,16 @@ public class HPBar : MonoBehaviour
     Slider slider;
     Unit unit;
     Transform parent;
-    Transform cameraTransform;
+   
 
     private void Awake()
     {
         slider = GetComponent<Slider>();
         parent = transform.parent;
         unit = GetComponentInParent<Unit>();
-        var canvas = GameObject.FindGameObjectWithTag(HP_CANVAS);
+        var canvas = GameObject.FindGameObjectWithTag(WORLD_CANVAS);
         if (canvas) transform.SetParent(canvas.transform);
-        cameraTransform = Camera.main.transform;
+        
     }
 
     private void Update()
@@ -37,12 +37,8 @@ public class HPBar : MonoBehaviour
         {
             slider.value = unit.HealthPercent;
         }
-            
+
         transform.position = parent.position + offset;
-        transform.LookAt(cameraTransform);
-        var rotation = transform.localEulerAngles;
-        rotation.y = 180;
-        transform.localEulerAngles = rotation;
     }
 
 }

@@ -11,6 +11,8 @@ public class Dragon : Unit
     float chasingSpeed = 5;
     [SerializeField]
     float patrolRadius = 5;
+    [SerializeField]
+    uint reward = 100;
 
     float normalSpeed;
     Vector3 startPoint;
@@ -111,7 +113,7 @@ public class Dragon : Unit
     public override void ReceiveDamage(float damage, Vector3 damageDealerPosition)
     {
         base.ReceiveDamage(damage, damageDealerPosition);
-        if(!target)
+        if(!target && isAlive)
         {
             task = Task.move;
             nav.SetDestination(damageDealerPosition);
@@ -122,6 +124,11 @@ public class Dragon : Unit
             animator.SetTrigger("Get Hit");
             nav.velocity = Vector3.zero;
         }
+
+        if (!isAlive && Money.TryAddMoney(reward) && reward > 0)
+         {
+            MoneyEarner.ShowMoneyText(transform.position, reward);
+         }
     }
 
     protected override void OnDrawGizmosSelected()

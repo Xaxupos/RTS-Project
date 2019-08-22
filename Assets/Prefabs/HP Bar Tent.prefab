@@ -197,6 +197,7 @@ GameObject:
   - component: {fileID: 6124845349146740052}
   - component: {fileID: 6124845349146740053}
   - component: {fileID: -1036007654001704069}
+  - component: {fileID: -8305541840357037004}
   m_Layer: 5
   m_Name: HP Bar Tent
   m_TagString: Untagged
@@ -290,3 +291,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 10, z: 0}
+--- !u!114 &-8305541840357037004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6124845349146740055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3035a9eb5fed2d84f98c0528e2686e12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
