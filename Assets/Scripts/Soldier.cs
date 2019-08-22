@@ -90,5 +90,4 @@ public class Soldier : Unit, ISelectable
         base.ReceiveDamage(damage, damageDealerPosition);
         animator.SetTrigger("Get Hit");
     }
-
 }
