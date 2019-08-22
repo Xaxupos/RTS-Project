@@ -117,7 +117,7 @@ public class Dragon : Unit
             nav.SetDestination(damageDealerPosition);
         }
 
-        if(HealthPercent > .5f)
+        if(HealthPercent > .75f)
         {
             animator.SetTrigger("Get Hit");
             nav.velocity = Vector3.zero;
